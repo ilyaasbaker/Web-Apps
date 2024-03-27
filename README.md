@@ -18,4 +18,4 @@ once the story is complete the world will be blessed with a new piece of collabo
 1. User Profile (account name + password)
 2. Public forum to post finished stories too
 3. Interactivity (Post - Comment - Like/Vote)
-4. Randomisation (Dice)
+4. Randomisation (Dice) (PASSAGE)
