@@ -35,7 +35,17 @@ app.use(sessions({
 }));
 
 require('dotenv').config()
-console.log(process.env.MY_BEST_KEPT_SECRET)
+// gives access to the content of the .env file
+const mongoDBPassword = process.env.MONGODBPASSWORD
+const uniqueDB = "ilyaas"
+
+const mongoose = require('mongoose')
+const connectionString = `mongodb+srv://CCO6005-00:${mongoDBPassword}@cluster0.lpfnqqx.mongodb.net/${uniqueDB}?retryWrites=true&w=majority`
+mongoose.connect(connectionString)
+
+const postData=require('./models/post-data.js')
+
+
 //test that user is logged in with a valid session
 function checkLoggedIn(request, response, nextAction){
     if(request.session){
@@ -83,7 +93,6 @@ app.post('/login', (request, response)=>{
     console.log(users.getUsers())
 })
 
-const postData=require('./posts-data.js')
 
 app.post('/newpost',(request, response) =>{
     console.log(request.body)
@@ -92,9 +101,9 @@ app.post('/newpost',(request, response) =>{
     response.redirect('/postsuccessful.html')
 })
 
-app.get('/getposts',(request, response)=>{
+app.get('/getposts', async (request, response)=>{
     response.json(
-        {posts:postData.getPosts(5)}
+        {posts: await postData.getPosts(5)}
         
     )
 })
