@@ -1,22 +1,46 @@
 const mongoose = require('mongoose')
 
-let story = {
+const {Schema, model} = mongoose
 
-    // ID's and Keys
-    storyID: '', // string?
-    snippetGroup: snippetID, 
+const postSchema = new Schema({
 
-    // Name 
-    storyName: '', // title of the story
+    postedBy: String,
+    message: String, 
+    time: Date
 
-    // Story Contents 
-    compiledStory: [
-        
-        {userResponse, snippetID, userID, timePosted, snippetNumber}, 
-        {userResponse, snippetID, userID, timePosted, snippetNumber} 
-    
-    ], // an array containing the user responses and some extra info to differentiate each users snippet
+})
 
+const Post = model('Post', postSchema)
 
-    // breathing space
+function addNewPost(userID, post){
+
+    let myPost={
+
+        postedBy: userID,
+        message: post.message,
+        time: Date.now()
+    }
+
+    Post.create(myPost)
+        .catch(err=>{
+
+        console.log("Error" +err)
+    })
+}
+
+async function getPosts(n=3){
+    let data=[]
+    await Post.find({})
+        .sort({'time': -1})
+        .limit(n)
+        .exec()
+        .then(mongoData=>{
+            data=mongoData
+        })
+    return data
+}
+
+module.exports={
+    addNewPost,
+    getPosts
 }
