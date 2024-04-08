@@ -121,8 +121,10 @@ app.post('/register', (request, response)=>{
 
 app.post('/newpost', (request, response) => {
 
-    postData.addNewPost(request.session.userid, request.body.message)
-    response.redirect('./application.html')
+    console.log(request.body)
+    console.log(request.session.userid)
+    postData.addNewPost(request.session.userid, request.body)
+    response.redirect('./story.html')
 })
 
 app.get('/getposts', async (request, response)=>{
