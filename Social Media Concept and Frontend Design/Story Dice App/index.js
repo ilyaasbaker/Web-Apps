@@ -30,17 +30,9 @@ app.use(cookieParser());
 app.use(sessions({
     secret: "a secret that only i know",
     saveUninitialized:true,
-    cookie: { maxAge: oneHour},
+    cookie: { maxAge: threeMins },
     resave: false 
 }));
-
-// connecting to mongoDB
-const mongoDBPassword = process.env.MONGODBPASSWORD
-const uniqueDB02 = "Ilyaas Social App Demo"
-
-const mongoose = require('mongoose')
-const connectionString = `mongodb+srv://CCO6005-00:${mongoDBPassword}@cluster0.lpfnqqx.mongodb.net/${uniqueDB02}?retryWrites=true&w=majority`
-mongoose.connect(connectionString)
 
 //test that user is logged in with a valid session
 function checkLoggedIn(request, response, nextAction){
