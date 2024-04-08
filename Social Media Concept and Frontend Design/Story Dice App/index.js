@@ -1,6 +1,6 @@
 const express=require('express')
 const app = express()
-app.listen(3000, ()=> console.log('listening at port 3000'))
+app.listen(3004, ()=> console.log('listening at port 3004'))
 
 //serve unspecified static pages from our public dir
 app.use(express.static('public'))
@@ -36,7 +36,10 @@ app.use(sessions({
 
 // connecting to mongoDB
 
+require('dotenv').config()
+
 const mongoDBPassword = process.env.MONGODBPASSWORD
+
 const uniqueDB = "ilyaasSocialMediaApp"
 
 const mongoose = require('mongoose')
