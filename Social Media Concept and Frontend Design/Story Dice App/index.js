@@ -30,9 +30,20 @@ app.use(cookieParser());
 app.use(sessions({
     secret: "a secret that only i know",
     saveUninitialized:true,
-    cookie: { maxAge: threeMins },
+    cookie: { maxAge: oneHour },
     resave: false 
 }));
+
+// connecting to mongoDB
+
+const mongoDBPassword = process.env.MONGODBPASSWORD
+const uniqueDB = "ilyaasSocialMediaApp"
+
+const mongoose = require('mongoose')
+const connectionString = `mongodb+srv://CCO6005-00:${mongoDBPassword}@cluster0.lpfnqqx.mongodb.net/${uniqueDB}?retryWrites=true&w=majority`
+mongoose.connect(connectionString)
+
+const postData = require('./models/post-data.js')
 
 //test that user is logged in with a valid session
 function checkLoggedIn(request, response, nextAction){
@@ -103,7 +114,7 @@ app.post('/register', (request, response)=>{
     console.log(users.getUsers())
 })
 
-const postData = require('./post-data.js')
+
 
 app.post('/newpost', (request, response) => {
 
@@ -111,8 +122,9 @@ app.post('/newpost', (request, response) => {
     response.redirect('./application.html')
 })
 
-app.get('/getposts', (request, response)=> {
-
-    response.json({posts:postData.getPosts(5)})
-
+app.get('/getposts', async (request, response)=>{
+    response.json(
+        {posts: await postData.getPosts(5)}
+        
+    )
 })
