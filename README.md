@@ -19,3 +19,8 @@ once the story is complete the world will be blessed with a new piece of collabo
 2. Public forum to post finished stories too
 3. Interactivity (Post - Comment - Like/Vote)
 4. Randomisation (Dice) (PASSAGE)
+
+
+## Concept 03
+
+The third and final concept (hopefully) is a simple poetry social media platfrom, users will be able to log in and share text based poetry of their choosing. Users will be able to interact by commenting and liking poetry posts. 
