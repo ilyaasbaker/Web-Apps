@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended: false}));
 const path = require('path');
 
 //importing our own node module
-const users=require('./users.js')
+const users=require('./models/users.js')
 
 //consts to hold expiry times in ms
 const threeMins = 1000 * 60 * 3;
@@ -66,32 +66,32 @@ app.get('/app', checkLoggedIn, (request, response)=>{
 
 
 //controller for logout
-app.post('/logout', (request, response)=>{
+app.post('/logout', async (request, response)=>{
     
-    users.setLoggedIn(request.session.userid,false)
+    // users.setLoggedIn(request.session.userid,false)
     request.session.destroy()
-    console.log(users.getUsers())
+    console.log(await users.getUsers())
     response.redirect('./loggedout.html')
 })
 
 //controller for login
-app.post('/login', (request, response)=>{
+app.post('/login', async (request, response)=>{
     console.log(request.body)
     let userData=request.body
     console.log(userData)
-    if(users.findUser(userData.username)){
+    if( await users.findUser(userData.username)){
         console.log('user found')
-        if(users.checkPassword(userData.username, userData.password)){
+        if(await users.checkPassword(userData.username, userData.password)){
             console.log('password matches')
             request.session.userid=userData.username
-            users.setLoggedIn(userData.username, true)
+            // users.setLoggedIn(userData.username, true)
             response.redirect('/loggedin.html')
         } else {
             console.log('password wrong')
             response.redirect('/loginfailed.html')
         }
     }
-    console.log(users.getUsers())
+    console.log( await users.getUsers())
 })
 
 
@@ -110,19 +110,19 @@ app.get('/getposts',async (request, response)=>{
 })
 
 //controller for registering a new user
-app.post('/register', (request, response)=>{
+app.post('/register', async (request, response)=>{
     console.log(request.body)
     let userData=request.body
     // console.log(userData.username)
-    if(users.findUser(userData.username)){
+    if(await users.findUser(userData.username)){
         console.log('user exists')
         response.json({
             status: 'failed',
             error:'user exists'
         })
     } else {
-        users.newUser(userData.username, userData.password)
+        await users.newUser(userData.username, userData.password)
         response.redirect('/registered.html')
     }
-    console.log(users.getUsers())
+    console.log( await users.getUsers())
 })
