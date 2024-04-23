@@ -79,7 +79,7 @@ app.post('/login', async (request, response)=>{
     console.log(request.body)
     let userData=request.body
     console.log(userData)
-    if( await users.findUser(userData.username)){
+    if(await users.findUser(userData.username)){
         console.log('user found')
         if(await users.checkPassword(userData.username, userData.password)){
             console.log('password matches')
@@ -91,7 +91,7 @@ app.post('/login', async (request, response)=>{
             response.redirect('/loginfailed.html')
         }
     }
-    console.log( await users.getUsers())
+    console.log(await users.getUsers())
 })
 
 
@@ -124,5 +124,5 @@ app.post('/register', async (request, response)=>{
         await users.newUser(userData.username, userData.password)
         response.redirect('/registered.html')
     }
-    console.log( await users.getUsers())
+    console.log(await users.getUsers())
 })
