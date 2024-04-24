@@ -5,17 +5,69 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+
+        .thumbnail {
+
+            width: 10%;
+        }
+
+    </style>
 </head>
 <body>
     <h2>Poets Corner</h2>
     <nav>
         <a href="logout.html">Logout</a>
+        <a href="post.html">Create a post</a>
         <a href="">Profile</a>
     </nav>
-    <form action="/newpost" method="POST">
-        <label>Message</label>
-        <input type="text" id="message" name="message"><br>
-        <input type="submit" value="Post">
-    </form>
+
+    <div>
+        <ul id="recent-posts"></ul>
+    </div>
+
+    <script>
+        let recentPosts=[]
+
+        let recentPostsList=document.querySelector('#recent-posts')
+        
+        fetch('/getposts')
+            .then(response=>response.json())
+            .then(fetchedData=>{
+                recentPosts=fetchedData.posts
+                handleServerData()
+            })
+
+        function handleServerData(){
+            recentPostsList.innerHTML=''
+            recentPosts.forEach(function(post){
+                let li=document.createElement('li')
+
+                if(post.imagePath) {
+
+                let postImage = document.createElement('img')
+                postImage.src = post.imagePath
+                postImage.alt = "temp alt tag"
+                postImage.classList.add("thumbnail")
+                li.appendChild(postImage)
+
+                } else {
+
+                    let noImage = document.createElement('p')
+                    noImage.textConten = "no image available"
+                    li.appendChild(noImage)
+
+                }
+                
+
+                let liText=document.createElement('p')
+                liText.textContent=`${post.message} (by ${post.postedBy})`
+                li.appendChild(liText)
+                recentPostsList.appendChild(li)
+            })
+        }
+        
+    </script>
 </body>
 </html>

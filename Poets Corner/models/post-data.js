@@ -3,6 +3,7 @@ const {Schema, model} = mongoose
 
 const postSchema = new Schema({
     postedBy: String,
+    imagePath: String,
     message: String,
     likes: Number,
     time: Date
@@ -11,9 +12,10 @@ const postSchema = new Schema({
 const Post = model('Post', postSchema)
 
 
-function addNewPost(userID, post){
+function addNewPost(userID, post, imageFilename){
     let myPost={
         postedBy: userID,
+        imagePath: imageFilename,
         message: post.message,
         likes: 0,
         time: Date.now()
