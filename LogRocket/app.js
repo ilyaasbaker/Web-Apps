@@ -13,16 +13,25 @@ const user = {
     firstName: 'Tim',
     lastName: 'Cook',
 }
+
 app.get('/', (req, res) => {
     res.render('pages/index', {
-        user
+        user,
+        title: "Home Page"
     })
 })
 app.get('/articles', (req, res) => {
     res.render('pages/articles', {
-        articles: posts
+        articles: posts,
+        title: "Articles"
     })
 })
+app.get('/about', (req, res) => {
+    res.render('pages/about', {
+        title: "About"
+    })
+})
+
 app.listen(port, () => {
   console.log(`App listening at port ${port}`)
 })
