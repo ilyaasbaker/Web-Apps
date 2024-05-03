@@ -4,29 +4,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <style>
-
-        .thumbnail {
-
-            width: 10%;
-        }
-
-    </style>
+    <title>Home</title>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/header.css"/>
+    <link rel="stylesheet" href="css/head.css"/>
+    <link rel="stylesheet" href="css/footer.css"/>
 </head>
 <body>
-    <h2>Poets Corner</h2>
-    <nav>
-        <a href="logout.html">Logout</a>
-        <a href="post.html">Create a post</a>
-        <a href="">Profile</a>
-    </nav>
+
+    <div id="wrapper">
+
+    <!-- HEADER -->
+<nav>
+    <div class="logo">
+        <a  href="application.html"><h1 class="headerTitle">Poets Corner</h1></a>
+    </div>
+    <ul>
+        <li>
+          <a href="profile.html">Profile</a>
+        </li>
+        <li>
+          <a href="post.html">Write a Poem</a>
+        </li>
+      </ul>
+    <div class="hamburger">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </div>
+  </nav>
+  <div class="menubar">
+    <ul>
+      <li>
+        <a href="profile.html">Profile</a>
+      </li>
+      <li>
+        <a href="post.html">Write a Poem</a>
+      </li>
+    </ul>
+  </div>
+
+
+<!-- ////// -->
+
+    <!-- MAIN -->
+    <section id="main">
+        <div class="inner">
 
     <div>
         <ul id="recent-posts"></ul>
     </div>
 
+
+    </div> <!-- inner -->
+</section> <!-- main -->
+<!-- ////// -->
+
+    <!-- FOOTER -->
+
+
+</div> <!-- "wrapper" -->
+
+    <!-- SCRIPTS -->
+    <script href="js/header.js"></script>
     <script>
         let recentPosts=[]
 
@@ -67,7 +107,7 @@
                 recentPostsList.appendChild(li)
             })
         }
-        
+
     </script>
 </body>
 </html>
