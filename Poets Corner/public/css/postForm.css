@@ -17,15 +17,15 @@ form {
     padding: 8px;
     margin-bottom: 10px;
     box-sizing: border-box;
-    border: none; /* Remove default border */
-    border-radius: 0; /* Remove default border radius */
-    border-bottom: 1px solid #051014; /* Add bottom border */
-    background-color: transparent; /* Make background transparent */
+    border: none; 
+    border-radius: 0; 
+    border-bottom: 1px solid #051014; 
+    background-color: transparent; 
     font-family: 'Newsreader', serif;
     font-size: 48px;
   }
   input[type="file"]:focus, input[type="text"]:focus {
-    outline: none; /* Remove outline on focus */
+    outline: none; 
   }
   input[type="submit"] {
     width: 100%;

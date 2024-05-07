@@ -1,0 +1,44 @@
+#recent-posts {
+    list-style: none;
+    padding: 0;
+}
+
+#recent-posts li {
+    margin-bottom: 0px;
+}
+
+.post-container {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 10px;
+    margin-bottom: 20px; 
+    text-align: center;
+    display: inline-block;
+  }
+
+  .text-container {
+    width: 100%;
+    text-align: center;
+  }
+
+  .text-container p {
+
+    font-family: 'Newsreader', serif;
+    color: black;
+    font-size: 2em;
+    overflow: hidden; 
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+    
+  }
+
+  .posted-by {
+
+    text-align: right;
+    margin-bottom: 30px;
+
+  }

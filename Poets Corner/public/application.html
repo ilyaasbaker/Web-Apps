@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/header.css"/>
     <link rel="stylesheet" href="css/head.css"/>
     <link rel="stylesheet" href="css/footer.css"/>
+    <link rel="stylesheet" href="css/recentPosts.css"/>
 </head>
 <body>
 
@@ -51,8 +52,11 @@
     <section id="main">
         <div class="inner">
 
+          
     <div>
+      <div class="square">
         <ul id="recent-posts"></ul>
+      </div>
     </div>
 
 
@@ -70,43 +74,56 @@
     <script>
         let recentPosts=[]
 
-        let recentPostsList=document.querySelector('#recent-posts')
-        
-        fetch('/getposts')
-            .then(response=>response.json())
-            .then(fetchedData=>{
-                recentPosts=fetchedData.posts
-                handleServerData()
-            })
+let recentPostsList=document.querySelector('#recent-posts')
 
-        function handleServerData(){
-            recentPostsList.innerHTML=''
-            recentPosts.forEach(function(post){
-                let li=document.createElement('li')
+fetch('/getposts')
+    .then(response=>response.json())
+    .then(fetchedData=>{
+        recentPosts=fetchedData.posts
+        handleServerData()
+    })
 
-                if(post.imagePath) {
+function handleServerData(){
+    recentPostsList.innerHTML=''
+    recentPosts.forEach(function(post){
+        let li=document.createElement('li')
 
-                let postImage = document.createElement('img')
-                postImage.src = post.imagePath
-                postImage.alt = "temp alt tag"
-                postImage.classList.add("thumbnail")
-                li.appendChild(postImage)
+        let postContainer = document.createElement('div');
+        postContainer.classList.add('post-container');
 
-                } else {
-
-                    let noImage = document.createElement('p')
-                    noImage.textContent = "no image available"
-                    li.appendChild(noImage)
-
-                }
-                
-
-                let liText=document.createElement('p')
-                liText.textContent=`${post.message} (by ${post.postedBy})`
-                li.appendChild(liText)
-                recentPostsList.appendChild(li)
-            })
+        if(post.imagePath) {
+            let postImage = document.createElement('img');
+            postImage.src = post.imagePath;
+            postImage.alt = "temp alt tag";
+            postImage.classList.add("thumbnail");
+            postContainer.appendChild(postImage);
         }
+
+        let textContainer = document.createElement('div');
+        textContainer.classList.add('text-container');
+
+        let liText=document.createElement('p');
+        liText.textContent = `${post.message}`;
+        textContainer.appendChild(liText);
+
+        postContainer.appendChild(textContainer);
+
+        li.appendChild(postContainer);
+
+        recentPostsList.appendChild(li);
+
+        let postedByDiv = document.createElement('div');
+        postedByDiv.classList.add('posted-by');
+
+        let postedByText = document.createElement('p');
+        postedByText.textContent = `Posted by: ${post.postedBy}`;
+        postedByText.style.fontFamily = 'Helvetica, sans-serif';
+        postedByText.style.fontWeight = 'bold';
+        postedByDiv.appendChild(postedByText);
+
+        recentPostsList.appendChild(postedByDiv);
+    })
+}
 
     </script>
 </body>

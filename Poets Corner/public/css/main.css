@@ -19,6 +19,7 @@ body {
     max-width: 70em; /* OG Value 68em */
     margin: 0 auto;
     padding: 0 2.5em;
+	display: flex;
 }
 
     @media screen and (max-width: 736px) {
