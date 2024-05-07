@@ -3,7 +3,7 @@
 body {
 
     background-color: #F9F0F3;
-    font-family: Newsreader, serif;
+	font-family: Helvetica, sans-serif;
 
 }
 
@@ -59,4 +59,13 @@ body {
 				padding: 0em 0 4em 0 ;
 			}
 
+		}
+
+		/* Login and Register Page */
+
+		.authpage {
+			text-align: center;
+			margin: 0 auto;
+			width: 50%; /* Adjust the width as needed */
+			margin-top: 20vh; /* Adjust the top margin as needed */
 		}
