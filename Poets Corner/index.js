@@ -99,21 +99,21 @@ app.post('/login', async (request, response)=>{
 
 // POST CONTROLLER
 
-app.post('/newpost', upload.single('userImage'), (request, response) =>{
+app.post('/newpost', (request, response) =>{
 
-    console.log(request.file)
+    // console.log(request.file)
     console.log(request.body)
     console.log(request.session.userid)
 
-    let filename = null
+    // let filename = null
 
-    if(request.file.filename){
+    // if(request.file.filename){
 
-        filename = 'uploads/' + request.file.filename
+    //     filename = 'uploads/' + request.file.filename
 
-    }
+    // }
 
-    postData.addNewPost(request.session.userid, request.body, filename)
+    postData.addNewPost(request.session.userid, request.body)
     response.redirect('/application.html')
 })
 

@@ -71,59 +71,73 @@
 
     <!-- SCRIPTS -->
     <script href="js/header.js"></script>
+
     <script>
-        let recentPosts=[]
+let recentPosts=[]
 
 let recentPostsList=document.querySelector('#recent-posts')
 
 fetch('/getposts')
-    .then(response=>response.json())
-    .then(fetchedData=>{
-        recentPosts=fetchedData.posts
+    .then(response => response.json())
+    .then(fetchedData => {
+        recentPosts = fetchedData.posts
         handleServerData()
     })
 
-function handleServerData(){
-    recentPostsList.innerHTML=''
-    recentPosts.forEach(function(post){
-        let li=document.createElement('li')
+    function handleServerData() {
+    recentPostsList.innerHTML = '';
+    recentPosts.forEach(function(post) {
+        let li = document.createElement('li');
 
         let postContainer = document.createElement('div');
         postContainer.classList.add('post-container');
 
-        if(post.imagePath) {
-            let postImage = document.createElement('img');
-            postImage.src = post.imagePath;
-            postImage.alt = "temp alt tag";
-            postImage.classList.add("thumbnail");
-            postContainer.appendChild(postImage);
-        }
+        let postedByDiv = document.createElement('div');
+        postedByDiv.classList.add('posted-by');
+        postedByDiv.textContent = `Posted by: ${post.postedBy}`;
+        postContainer.appendChild(postedByDiv);
 
         let textContainer = document.createElement('div');
         textContainer.classList.add('text-container');
 
-        let liText=document.createElement('p');
-        liText.textContent = `${post.message}`;
-        textContainer.appendChild(liText);
+        let postText = document.createElement('p');
+        postText.textContent = `${post.message}`;
+        textContainer.appendChild(postText);
+
+        // Preserve layout of the text
+        textContainer.style.whiteSpace = 'pre-wrap';
+
+        // Calculate height of text container dynamically
+        let textHeight = getTextHeight(post.message);
+        textContainer.style.height = `${textHeight}px`;
 
         postContainer.appendChild(textContainer);
 
         li.appendChild(postContainer);
 
         recentPostsList.appendChild(li);
-
-        let postedByDiv = document.createElement('div');
-        postedByDiv.classList.add('posted-by');
-
-        let postedByText = document.createElement('p');
-        postedByText.textContent = `Posted by: ${post.postedBy}`;
-        postedByText.style.fontFamily = 'Helvetica, sans-serif';
-        postedByText.style.fontWeight = 'bold';
-        postedByDiv.appendChild(postedByText);
-
-        recentPostsList.appendChild(postedByDiv);
-    })
+    });
 }
+
+
+
+function getTextHeight(text) {
+    // Create a temporary element to calculate height
+    let tempElement = document.createElement('div');
+    tempElement.style.visibility = 'hidden';
+    tempElement.style.position = 'absolute';
+    tempElement.style.width = '200px'; // Set your desired width
+    tempElement.style.wordWrap = 'break-word';
+    tempElement.style.whiteSpace = 'pre-wrap';
+    tempElement.textContent = text;
+
+    document.body.appendChild(tempElement);
+    let height = tempElement.offsetHeight;
+    document.body.removeChild(tempElement);
+
+    return height;
+}
+
 
     </script>
 </body>

@@ -1,44 +1,28 @@
+/* Remove list styling */
 #recent-posts {
-    list-style: none;
-    padding: 0;
+  list-style-type: none;
 }
 
-#recent-posts li {
-    margin-bottom: 0px;
-}
-
+/* Styles for the post container */
 .post-container {
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 10px;
-    margin-bottom: 20px; 
-    text-align: center;
-    display: inline-block;
-  }
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
 
-  .text-container {
-    width: 100%;
-    text-align: center;
-  }
+/* Styles for the text container */
+.text-container {
+  text-align: left; /* Align text to the right */
+}
 
-  .text-container p {
+/* Styles for the text content */
+.text-container p {
+  font-family: 'Newsreader', serif; /* Set font to Newsreader */
+  font-weight: bold; /* Set font weight to bold */
+}
 
-    font-family: 'Newsreader', serif;
-    color: black;
-    font-size: 2em;
-    overflow: hidden; 
-    white-space: nowrap;
-    text-overflow: ellipsis; 
-    
-  }
-
-  .posted-by {
-
-    text-align: right;
-    margin-bottom: 30px;
-
-  }
+/* Styles for the posted by information */
+.posted-by {
+  font-style: italic;
+  margin-bottom: 5px; /* Add some space between posted by and the text */
+}

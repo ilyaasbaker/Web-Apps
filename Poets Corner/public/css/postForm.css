@@ -50,3 +50,24 @@ form {
 #recent-posts li {
     margin-bottom: 20px;
 }
+
+textarea#message {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #051014; 
+  background-color: transparent;
+  font-family: 'Newsreader', serif; 
+  font-weight: bold; 
+  font-size: 28px;
+  color: black; 
+}
+
+/* Style when textarea is focused */
+textarea#message:focus {
+  outline: none; 
+  border-bottom-color: black; 
+  caret-color: #832232; 
+}
