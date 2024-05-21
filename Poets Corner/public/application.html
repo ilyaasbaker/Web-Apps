@@ -10,135 +10,151 @@
     <link rel="stylesheet" href="css/head.css"/>
     <link rel="stylesheet" href="css/footer.css"/>
     <link rel="stylesheet" href="css/recentPosts.css"/>
+    <style>
+        /* Like button styles */
+        .like-button {
+            background-color: #007bff; /* Blue background */
+            color: white; /* White text */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px 20px; /* Padding */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s; /* Smooth transition for background color */
+            display: flex; /* Flexbox for aligning items */
+            align-items: center; /* Center items vertically */
+            gap: 5px; /* Space between star and count */
+        }
+
+        .like-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .like-button:active {
+            background-color: #003d80; /* Even darker blue when active */
+        }
+
+        .like-button:focus {
+            outline: none; /* Remove outline on focus */
+            box-shadow: 0 0 5px #007bff; /* Add a shadow on focus */
+        }
+
+        /* Style the star symbol */
+        .like-button .star {
+            font-size: 20px; /* Increase star size */
+            color: gold; /* Star color */
+        }
+    </style>
 </head>
 <body>
-
     <div id="wrapper">
-
-    <!-- HEADER -->
-<nav>
-    <div class="logo">
-        <a href="application.html"><h1 class="headerTitle">Poets Corner</h1></a>
+        <!-- Your existing HTML content -->
+        <nav>
+            <div class="logo">
+                <a href="application.html"><h1 class="headerTitle">Poets Corner</h1></a>
+            </div>
+            <ul>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="post.html">Write a Poem</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </div>
+        </nav>
+        <div class="menubar">
+            <ul>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="post.html">Write a Poem</a></li>
+            </ul>
+        </div>
+        <section id="main">
+            <div class="inner">
+                <div>
+                    <div class="square">
+                        <ul id="recent-posts"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-    <ul>
-        <li>
-          <a href="profile.html">Profile</a>
-        </li>
-        <li>
-          <a href="post.html">Write a Poem</a>
-        </li>
-      </ul>
-    <div class="hamburger">
-      <span class="line"></span>
-      <span class="line"></span>
-      <span class="line"></span>
-    </div>
-  </nav>
-  <div class="menubar">
-    <ul>
-      <li>
-        <a href="profile.html">Profile</a>
-      </li>
-      <li>
-        <a href="post.html">Write a Poem</a>
-      </li>
-    </ul>
-  </div>
-
-
-<!-- ////// -->
-
-    <!-- MAIN -->
-    <section id="main">
-        <div class="inner">
-
-          
-    <div>
-      <div class="square">
-        <ul id="recent-posts"></ul>
-      </div>
-    </div>
-
-
-    </div> <!-- inner -->
-</section> <!-- main -->
-<!-- ////// -->
-
-    <!-- FOOTER -->
-
-
-</div> <!-- "wrapper" -->
-
-    <!-- SCRIPTS -->
     <script href="js/header.js"></script>
-
     <script>
-let recentPosts=[]
-
-let recentPostsList=document.querySelector('#recent-posts')
-
-fetch('/getposts')
-    .then(response => response.json())
-    .then(fetchedData => {
-        recentPosts = fetchedData.posts
-        handleServerData()
-    })
-
-    function handleServerData() {
-    recentPostsList.innerHTML = '';
-    recentPosts.forEach(function(post) {
-        let li = document.createElement('li');
-
-        let postContainer = document.createElement('div');
-        postContainer.classList.add('post-container');
-
-        let postedByDiv = document.createElement('div');
-        postedByDiv.classList.add('posted-by');
-        postedByDiv.textContent = `Posted by: ${post.postedBy}`;
-        postContainer.appendChild(postedByDiv);
-
-        let textContainer = document.createElement('div');
-        textContainer.classList.add('text-container');
-
-        let postText = document.createElement('p');
-        postText.textContent = `${post.message}`;
-        textContainer.appendChild(postText);
-
-        // Preserve layout of the text
-        textContainer.style.whiteSpace = 'pre-wrap';
-
-        // Calculate height of text container dynamically
-        let textHeight = getTextHeight(post.message);
-        textContainer.style.height = `${textHeight}px`;
-
-        postContainer.appendChild(textContainer);
-
-        li.appendChild(postContainer);
-
-        recentPostsList.appendChild(li);
-    });
-}
-
-
-
-function getTextHeight(text) {
-    // Create a temporary element to calculate height
-    let tempElement = document.createElement('div');
-    tempElement.style.visibility = 'hidden';
-    tempElement.style.position = 'absolute';
-    tempElement.style.width = '200px'; // Set your desired width
-    tempElement.style.wordWrap = 'break-word';
-    tempElement.style.whiteSpace = 'pre-wrap';
-    tempElement.textContent = text;
-
-    document.body.appendChild(tempElement);
-    let height = tempElement.offsetHeight;
-    document.body.removeChild(tempElement);
-
-    return height;
-}
-
-
+        // Your existing JavaScript code
+        let recentPosts = [];
+        let recentPostsList = document.querySelector('#recent-posts');
+        
+        fetch('/getposts')
+            .then(response => response.json())
+            .then(fetchedData => {
+                recentPosts = fetchedData.posts;
+                handleServerData();
+            });
+        
+        function handleServerData() {
+            recentPostsList.innerHTML = '';
+            recentPosts.forEach(function(post) {
+                let li = document.createElement('li');
+                let postContainer = document.createElement('div');
+                postContainer.classList.add('post-container');
+                let postedByDiv = document.createElement('div');
+                postedByDiv.classList.add('posted-by');
+                postedByDiv.textContent = `Posted by: ${post.postedBy}`;
+                postContainer.appendChild(postedByDiv);
+                let textContainer = document.createElement('div');
+                textContainer.classList.add('text-container');
+                let postText = document.createElement('p');
+                postText.textContent = `${post.message}`;
+                textContainer.appendChild(postText);
+                textContainer.style.whiteSpace = 'pre-wrap';
+                let textHeight = getTextHeight(post.message);
+                textContainer.style.height = `${textHeight}px`;
+                postContainer.appendChild(textContainer);
+                let likeButton = document.createElement('button');
+                likeButton.classList.add('like-button');
+                likeButton.innerHTML = `<span class="star">&#10031;</span> (${post.likes})`; // Use span for the star symbol
+                likeButton.addEventListener('click', () => handleLikeButtonClick(post._id));
+                postContainer.appendChild(likeButton);  
+                li.appendChild(postContainer);
+                recentPostsList.appendChild(li);
+            });
+        }
+        
+        function getTextHeight(text) {
+            let tempElement = document.createElement('div');
+            tempElement.style.visibility = 'hidden';
+            tempElement.style.position = 'absolute';
+            tempElement.style.width = '200px';
+            tempElement.style.wordWrap = 'break-word';
+            tempElement.style.whiteSpace = 'pre-wrap';
+            tempElement.textContent = text;
+            document.body.appendChild(tempElement);
+            let height = tempElement.offsetHeight;
+            document.body.removeChild(tempElement);
+            return height;
+        }
+        
+        function handleLikeButtonClick(postId) {
+            fetch(`/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ postId: postId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetch('/getposts')
+                        .then(response => response.json())
+                        .then(fetchedData => {
+                            recentPosts = fetchedData.posts;
+                            handleServerData();
+                        });
+                }
+            });
+        }
     </script>
 </body>
 </html>
