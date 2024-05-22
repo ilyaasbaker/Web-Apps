@@ -75,24 +75,50 @@ app.post('/logout', async (request, response) => {
 })
 
 // LOGIN CONTROLLER
+app.post('/login', async (request, response)=>{
 
-app.post('/login', async (request, response) => {
     console.log(request.body)
-    let userData = request.body
+    let userData=request.body
     console.log(userData)
-    if (await users.findUser(userData.username)) {
+
+    if(await users.findUser(userData.username)){
+
         console.log('user found')
-        if (await users.checkPassword(userData.username, userData.password)) {
-            console.log('password matches')
-            request.session.userid = userData.username
-            response.redirect('/application.html')
-        } else {
-            console.log('password wrong')
-            response.redirect('/login.html')
-        }
+
+        await users.checkPassword(userData.username, userData.password, async function(isMatch){
+
+            if(isMatch){
+
+                console.log('password matches')
+                request.session.userid=userData.username
+                // await users.setLoggedIn(userData.username, true)
+                response.redirect('/application.html')
+            } else {
+                console.log('password wrong')
+                response.redirect('./login.html')
+            }
+        })
     }
     console.log(await users.getUsers())
 })
+
+// app.post('/login', async (request, response) => {
+//     console.log(request.body)
+//     let userData = request.body
+//     console.log(userData)
+//     if (await users.findUser(userData.username)) {
+//         console.log('user found')
+//         if (await users.checkPassword(userData.username, userData.password)) {
+//             console.log('password matches')
+//             request.session.userid = userData.username
+//             response.redirect('/application.html')
+//         } else {
+//             console.log('password wrong')
+//             response.redirect('/login.html')
+//         }
+//     }
+//     console.log(await users.getUsers())
+// })
 
 // POST CONTROLLER
 
