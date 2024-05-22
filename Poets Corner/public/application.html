@@ -37,87 +37,84 @@
             <div class="inner">
                 <div>
                     <div class="square">
-                        <ul id="recent-posts"></ul>
+                        <ul id="recent-posts">
+                            <li>No recent posts available.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </section>
     </div>
-    <script href="js/header.js"></script>
-    <script>
-        let recentPosts = [];
-        let recentPostsList = document.querySelector('#recent-posts');
-        
-        fetch('/getposts')
-            .then(response => response.json())
-            .then(fetchedData => {
-                recentPosts = fetchedData.posts;
-                handleServerData();
-            });
-        
-        function handleServerData() {
-            recentPostsList.innerHTML = '';
-            recentPosts.forEach(function(post) {
-                let li = document.createElement('li');
-                let postContainer = document.createElement('div');
-                postContainer.classList.add('post-container');
-                let postedByDiv = document.createElement('div');
-                postedByDiv.classList.add('posted-by');
-                postedByDiv.textContent = `Posted by: ${post.postedBy}`;
-                postContainer.appendChild(postedByDiv);
-                let textContainer = document.createElement('div');
-                textContainer.classList.add('text-container');
-                let postText = document.createElement('p');
-                postText.textContent = `${post.message}`;
-                textContainer.appendChild(postText);
-                textContainer.style.whiteSpace = 'pre-wrap';
-                let textHeight = getTextHeight(post.message);
-                textContainer.style.height = `${textHeight}px`;
-                postContainer.appendChild(textContainer);
-                let likeButton = document.createElement('button');
-                likeButton.classList.add('like-button');
-                likeButton.innerHTML = `<span class="star">&#9733;</span> (${post.likes})`; 
-                likeButton.addEventListener('click', () => handleLikeButtonClick(post._id));
-                postContainer.appendChild(likeButton);  
-                li.appendChild(postContainer);
-                recentPostsList.appendChild(li);
-            });
+    <script src="js/header.js"></script>
+<script>
+    let recentPosts = [];
+    let recentPostsList = document.querySelector('#recent-posts');
+
+    fetch('/getposts')
+        .then(response => response.json())
+        .then(fetchedData => {
+            recentPosts = fetchedData.posts;
+            handleServerData();
+        });
+
+    function handleServerData() {
+        recentPostsList.innerHTML = '';
+        if (recentPosts.length === 0) {
+            let li = document.createElement('li');
+            li.textContent = "No recent posts available.";
+            recentPostsList.appendChild(li);
+            return;
         }
-        
-        function getTextHeight(text) {
-            let tempElement = document.createElement('div');
-            tempElement.style.visibility = 'hidden';
-            tempElement.style.position = 'absolute';
-            tempElement.style.width = '200px';
-            tempElement.style.wordWrap = 'break-word';
-            tempElement.style.whiteSpace = 'pre-wrap';
-            tempElement.textContent = text;
-            document.body.appendChild(tempElement);
-            let height = tempElement.offsetHeight;
-            document.body.removeChild(tempElement);
-            return height;
-        }
-        
-        function handleLikeButtonClick(postId) {
-            fetch(`/like`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ postId: postId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    fetch('/getposts')
-                        .then(response => response.json())
-                        .then(fetchedData => {
-                            recentPosts = fetchedData.posts;
-                            handleServerData();
-                        });
-                }
-            });
-        }
-    </script>
+        recentPosts.forEach(function(post) {
+            let li = document.createElement('li');
+            let postContainer = document.createElement('div');
+            postContainer.classList.add('post-container');
+            let postedByDiv = document.createElement('div');
+            postedByDiv.classList.add('posted-by');
+            postedByDiv.textContent = `Posted by: ${post.postedBy}`;
+            postContainer.appendChild(postedByDiv);
+            let textContainer = document.createElement('div');
+            textContainer.classList.add('text-container');
+            let postText = document.createElement('p');
+            postText.textContent = `${post.message}`;
+            textContainer.appendChild(postText);
+            textContainer.style.whiteSpace = 'pre-wrap';
+            postContainer.appendChild(textContainer);
+            let likeButton = document.createElement('button');
+            likeButton.classList.add('like-button');
+            if (post.liked) {
+                likeButton.classList.add('liked');
+            }
+            likeButton.innerHTML = `<span class="star">&#9733;</span> <span>${post.likes}</span>`;
+            likeButton.addEventListener('click', () => handleLikeButtonClick(post._id, likeButton));
+            postContainer.appendChild(likeButton);
+            li.appendChild(postContainer);
+            recentPostsList.appendChild(li);
+        });
+    }
+
+    function handleLikeButtonClick(postId, button) {
+        fetch(`/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ postId: postId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                button.classList.toggle('liked');
+                fetch('/getposts')
+                    .then(response => response.json())
+                    .then(fetchedData => {
+                        recentPosts = fetchedData.posts;
+                        handleServerData();
+                    });
+            }
+        });
+    }
+</script>
+
 </body>
 </html>
