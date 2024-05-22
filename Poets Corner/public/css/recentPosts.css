@@ -16,7 +16,7 @@
 
 /* Styles for the text content */
 .text-container p {
-  font-family: 'Newsreader', serif; /* Set font to Newsreader */
+  font-family: "Newsreader", serif; /* Set font to Newsreader */
   font-weight: bold; /* Set font weight to bold */
 }
 
@@ -26,41 +26,36 @@
   margin-bottom: 5px; /* Add some space between posted by and the text */
 }
 
-/* Add this CSS to your main.css or within a <style> tag in application.html */
-
-/* Like button styles */
 .like-button {
   background-color: transparent; /* Transparent background */
-  color: white; /* White text */
   border: none; /* No border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 10px 20px; /* Padding */
-  font-size: 16px; /* Font size */
   cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition for background color */
-  display: flex; /* Flexbox for aligning items */
-  align-items: center; /* Center items vertically */
-  gap: 5px; /* Space between star and count */
+  font-size: 24px; /* Increase icon size */
+  transition: color 0.3s; /* Smooth transition for color */
 }
 
 .like-button:hover {
-  background-color: #0056b3;
-  content: \2605; 
+
+    background-color: green;
+
+}
+
+.like-button .star {
+  color: black; /* Initial star color */
 }
 
 .like-button:active {
-  background-color: #003d80;
-  content: \2605; 
+
+  color: red; /* Red color when active */
+
 }
 
-.like-button:focus {
-  outline: none; /* Remove outline on focus */
-  box-shadow: none; /* Remove box shadow on focus */
-  content: \2605;
-}
+.like-button.active {
 
-/* Style the star symbol */
-.like-button .star {
-  font-size: 24px; /* Change this to the desired size */
-  color: gold; /* Star color */
+  background-color: transparent; /* Transparent background */
+  border: none; /* No border */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 24px; /* Increase icon size */
+  transition: color 0.3s;
+
 }

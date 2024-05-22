@@ -10,45 +10,9 @@
     <link rel="stylesheet" href="css/head.css"/>
     <link rel="stylesheet" href="css/footer.css"/>
     <link rel="stylesheet" href="css/recentPosts.css"/>
-    <style>
-        /* Like button styles */
-        .like-button {
-            background-color: #007bff; /* Blue background */
-            color: white; /* White text */
-            border: none; /* No border */
-            border-radius: 5px; /* Rounded corners */
-            padding: 10px 20px; /* Padding */
-            font-size: 16px; /* Font size */
-            cursor: pointer; /* Pointer cursor on hover */
-            transition: background-color 0.3s; /* Smooth transition for background color */
-            display: flex; /* Flexbox for aligning items */
-            align-items: center; /* Center items vertically */
-            gap: 5px; /* Space between star and count */
-        }
-
-        .like-button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-        }
-
-        .like-button:active {
-            background-color: #003d80; /* Even darker blue when active */
-        }
-
-        .like-button:focus {
-            outline: none; /* Remove outline on focus */
-            box-shadow: 0 0 5px #007bff; /* Add a shadow on focus */
-        }
-
-        /* Style the star symbol */
-        .like-button .star {
-            font-size: 20px; /* Increase star size */
-            color: gold; /* Star color */
-        }
-    </style>
 </head>
 <body>
     <div id="wrapper">
-        <!-- Your existing HTML content -->
         <nav>
             <div class="logo">
                 <a href="application.html"><h1 class="headerTitle">Poets Corner</h1></a>
@@ -81,7 +45,6 @@
     </div>
     <script href="js/header.js"></script>
     <script>
-        // Your existing JavaScript code
         let recentPosts = [];
         let recentPostsList = document.querySelector('#recent-posts');
         
@@ -113,7 +76,7 @@
                 postContainer.appendChild(textContainer);
                 let likeButton = document.createElement('button');
                 likeButton.classList.add('like-button');
-                likeButton.innerHTML = `<span class="star">&#10031;</span> (${post.likes})`; // Use span for the star symbol
+                likeButton.innerHTML = `<span class="star">&#9733;</span> (${post.likes})`; 
                 likeButton.addEventListener('click', () => handleLikeButtonClick(post._id));
                 postContainer.appendChild(likeButton);  
                 li.appendChild(postContainer);
