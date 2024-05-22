@@ -28,7 +28,8 @@
 .text-container p {
   font-family: "Newsreader", serif;
   font-weight: bold;
-  font-size: 40px;
+  line-height: 27px;
+  font-size: 25px;
   margin: 10px 0; 
 }
 

@@ -10,23 +10,24 @@ app.use(express.json())
 //allows us to process post info in urls
 app.use(express.urlencoded({ extended: false }));
 
+// Import necessary modules
 const path = require('path');
-
-//importing our own node module
+const multer = require('multer');
 const users = require('./models/users.js')
+const sessions = require('express-session');
+const cookieParser = require("cookie-parser");
+require('dotenv').config()
+const mongoose = require('mongoose')
+const postData = require('./models/post-data.js')
 
-//consts to hold expiry times in ms
+// Constants to hold expiry times in ms
 const threeMins = 1000 * 60 * 3;
 const oneHour = 1000 * 60 * 60;
 
-//use the sessions module and the cookie parser module
-const sessions = require('express-session');
-const cookieParser = require("cookie-parser");
-
-//make cookie parser middleware available
+// Setup cookie parser middleware
 app.use(cookieParser());
 
-//load sessions middleware, with some config
+// Setup sessions middleware with configuration
 app.use(sessions({
     secret: "a secret that only i know",
     saveUninitialized: true,
@@ -34,35 +35,25 @@ app.use(sessions({
     resave: false
 }));
 
-require('dotenv').config()
 const mongoDBPassword = process.env.MONGODBPASSWORD
 const myUniqueDatabase = "PoetsCorner"
-
-const mongoose = require('mongoose')
 const connectionString = `mongodb+srv://CCO6005-00:${mongoDBPassword}@cluster0.lpfnqqx.mongodb.net/${myUniqueDatabase}?retryWrites=true&w=majority`
 mongoose.connect(connectionString)
 
-//mongoose.connect(`mongodb+srv://CCO6005-00:${mongoDBPassword}@cluster0.lpfnqqx.mongodb.net/DJWApp?retryWrites=true&w=majority`)
-const postData = require('./models/post-data.js')
+// Setup multer for file uploads
+const upload = multer({ dest: 'public/uploads/' })
 
-// IMPORT MULTER
-const multer = require('multer')
-const { request } = require('http')
-const upload = multer({ dest: './public/uploads' })
-
-//test that user is logged in with a valid session
+// Test that user is logged in with a valid session
 function checkLoggedIn(request, response, nextAction) {
-    if (request.session) {
-        if (request.session.userid) {
-            nextAction()
-        } else {
-            request.session.destroy()
-            return response.redirect('/login.html')
-        }
+    if (request.session && request.session.userid) {
+        nextAction()
+    } else {
+        request.session.destroy()
+        return response.redirect('/login.html')
     }
 }
 
-//controller for the main app view, depends on user logged in state
+// Controller for the main app view, depends on user logged in state
 app.get('/app', checkLoggedIn, (request, response) => {
     response.redirect('./application.html')
 })
@@ -75,23 +66,18 @@ app.post('/logout', async (request, response) => {
 })
 
 // LOGIN CONTROLLER
-app.post('/login', async (request, response)=>{
-
+app.post('/login', async (request, response) => {
     console.log(request.body)
-    let userData=request.body
+    let userData = request.body
     console.log(userData)
 
-    if(await users.findUser(userData.username)){
-
+    if (await users.findUser(userData.username)) {
         console.log('user found')
 
-        await users.checkPassword(userData.username, userData.password, async function(isMatch){
-
-            if(isMatch){
-
+        await users.checkPassword(userData.username, userData.password, async function (isMatch) {
+            if (isMatch) {
                 console.log('password matches')
-                request.session.userid=userData.username
-                // await users.setLoggedIn(userData.username, true)
+                request.session.userid = userData.username
                 response.redirect('/application.html')
             } else {
                 console.log('password wrong')
@@ -102,26 +88,7 @@ app.post('/login', async (request, response)=>{
     console.log(await users.getUsers())
 })
 
-// app.post('/login', async (request, response) => {
-//     console.log(request.body)
-//     let userData = request.body
-//     console.log(userData)
-//     if (await users.findUser(userData.username)) {
-//         console.log('user found')
-//         if (await users.checkPassword(userData.username, userData.password)) {
-//             console.log('password matches')
-//             request.session.userid = userData.username
-//             response.redirect('/application.html')
-//         } else {
-//             console.log('password wrong')
-//             response.redirect('/login.html')
-//         }
-//     }
-//     console.log(await users.getUsers())
-// })
-
 // POST CONTROLLER
-
 app.post('/newpost', (request, response) => {
     console.log(request.body)
     console.log(request.session.userid)
@@ -130,13 +97,10 @@ app.post('/newpost', (request, response) => {
 })
 
 app.get('/getposts', async (request, response) => {
-    response.json(
-        { posts: await postData.getPosts(5) }
-    )
+    response.json({ posts: await postData.getPosts(5) })
 })
 
 // REGISTER NEW USER CONTROLLER
-
 app.post('/register', async (request, response) => {
     console.log(request.body)
     let userData = request.body
@@ -153,9 +117,48 @@ app.post('/register', async (request, response) => {
     console.log(await users.getUsers())
 })
 
+// Endpoint for updating username
+app.post('/update-username', checkLoggedIn, async (req, res) => {
+    const { username } = req.body;
+    const userId = req.session.userid;
+
+    try {
+        await users.updateUsername(userId, username);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// Endpoint for uploading profile picture
+app.post('/upload-profile-pic', checkLoggedIn, upload.single('profilePic'), async (req, res) => {
+    const userId = req.session.userid;
+    const profilePicUrl = `/uploads/${req.file.filename}`;
+
+    try {
+        await users.updateProfilePic(userId, profilePicUrl);
+        res.json({ success: true, profilePicUrl });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// Endpoint for getting user data
+app.get('/get-user-data', checkLoggedIn, async (req, res) => {
+    const userId = req.session.userid;
+
+    try {
+        const user = await users.findUser(userId);
+        res.json({ username: user.username, profilePicUrl: user.profilePicUrl });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// Endpoint for liking a post
 app.post('/like', checkLoggedIn, async (request, response) => {
     const { postId } = request.body;
     const userId = request.session.userid;
     const success = await postData.toggleLike(postId, userId);
     response.json({ success });
-})
+});

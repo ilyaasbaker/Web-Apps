@@ -7,8 +7,17 @@ const SALT_WORK_FACTOR = 10
 const userSchema = new Schema({
     username: String,
     password: String,
-    loggedin: Boolean
-})
+    loggedin: Boolean,
+    profilePicUrl: String
+});
+
+async function updateUsername(currentUsername, newUsername) {
+    await User.findOneAndUpdate({ username: currentUsername }, { username: newUsername }).exec();
+}
+
+async function updateProfilePic(username, profilePicUrl) {
+    await User.findOneAndUpdate({ username }, { profilePicUrl }).exec();
+}
 
 // const users=[
 //     {username:'user1', password:'123', loggedin:false},
@@ -123,5 +132,7 @@ exports.newUser=newUser;
 exports.getUsers=getUsers;
 exports.findUser=findUser;
 exports.checkPassword=checkPassword;
+exports.updateUsername = updateUsername;
+exports.updateProfilePic = updateProfilePic;
 // exports.setLoggedIn=setLoggedIn;
 // exports.isLoggedIn=isLoggedIn;
